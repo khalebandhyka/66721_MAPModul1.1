@@ -31,6 +31,8 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import androidx.compose.ui.text.font.FontWeight
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,7 +131,7 @@ private fun Greetings (name: String, modifier: Modifier = Modifier) {
                 .padding(bottom = extraPadding.coerceAtLeast(0.dp))
             ) {
                 Text(text = "Hello, ")
-                Text(text = name)
+                Text(text = name, style = MaterialTheme.typography.headlineMedium)
             }
             ElevatedButton(
                 onClick = { expanded = !expanded }
@@ -155,7 +157,10 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                         .padding(bottom = extraPadding)
                 ) {
                     Text(text = "Hello ")
-                    Text(text = name)
+                    Text(text = name,
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontWeight = FontWeight.ExtraBold)
+                    )
                 }
                 ElevatedButton(
                     onClick = { expanded.value = !expanded.value}
@@ -179,5 +184,18 @@ fun GreetingsPreview() {
 fun MyAppPreview() {
     MyApplicationTheme {
         MyApp(Modifier.fillMaxSize())
+    }
+}
+@Preview(
+    showBackground = true,
+    widthDp = 320,
+    uiMode = UI_MODE_NIGHT_YES,
+    name = "GreetingPreviewDark"
+)
+@Preview(showBackground = true, widthDp = 320)
+@Composable
+fun GreetingPreview() {
+    MyApplicationTheme {
+        Greetings()
     }
 }
