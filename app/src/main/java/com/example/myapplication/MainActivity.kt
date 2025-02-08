@@ -27,6 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import com.example.myapplication.ui.theme.MyApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -95,6 +98,7 @@ private fun Greetings(
     }
 }
 
+
 @Preview(showBackground = true, widthDp = 320, heightDp = 320)
 @Composable
 fun OnboardingPreview() {
@@ -103,6 +107,38 @@ fun OnboardingPreview() {
     }
 }
 
+@Composable
+private fun Greetings (name: String, modifier: Modifier = Modifier) {
+
+    var expanded by rememberSaveable { mutableStateOf(false) }
+
+    val extraPadding by animateDpAsState(
+        if (expanded) 48.dp else 0.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        )
+    )
+    Surface(
+        color = MaterialTheme.colorScheme.primary,
+        modifier = modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+    ) {
+        Row(modifier = Modifier.padding(24.dp)) {
+            Column(modifier = Modifier
+                .weight(1f)
+                .padding(bottom = extraPadding.coerceAtLeast(0.dp))
+            ) {
+                Text(text = "Hello, ")
+                Text(text = name)
+            }
+            ElevatedButton(
+                onClick = { expanded = !expanded }
+            ) {
+                Text(if (expanded) "Show less" else "Show more")
+            }
+        }
+    }
+}
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
